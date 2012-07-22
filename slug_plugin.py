@@ -8,4 +8,4 @@ class SlugCommand(sublime_plugin.TextCommand):
         view = self.view
         for region in view.sel():
             val = view.substr(region).encode('utf-8')
-            view.replace(edit, region, slug.slug(val, '_'))
+            view.replace(edit, region, slug.slug(val, -1, '_'))
