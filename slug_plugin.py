@@ -14,6 +14,7 @@ class SlugCommand(sublime_plugin.TextCommand):
 
     def slug(self, edit, value):
         view = self.view
+        # Remember last separator used.
         self.separator = value
 
         for region in view.sel():
