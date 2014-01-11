@@ -1,22 +1,26 @@
-import sublime
 import sublime_plugin
-import slug
+try:
+    # This import method works in Sublime Text 2.
+    import slug
+except ImportError:
+    # While this works in Sublime Text 3.
+    from . import slug
 
 
 class SlugCommand(sublime_plugin.TextCommand):
     separator = '-'
 
     def run(self, edit):
-        window = self.view.window()
-        done = lambda(value): self.slug(edit, value)
+        def done(value):
+            self.separator = value
+            self.view.run_command('slug_replace', {'separator': self.separator})
 
+        window = self.view.window()
         window.show_input_panel('Separator', self.separator, done, None, None)
 
-    def slug(self, edit, value):
-        view = self.view
-        # Remember last separator used.
-        self.separator = value
 
-        for region in view.sel():
-            val = view.substr(region).encode('utf-8')
-            view.replace(edit, region, slug.slug(val, -1, self.separator))
+class SlugReplaceCommand(sublime_plugin.TextCommand):
+    def run(self, edit, separator):
+        for region in self.view.sel():
+            val = self.view.substr(region)
+            self.view.replace(edit, region, slug.slug(val, -1, separator))

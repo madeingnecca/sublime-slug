@@ -1,5 +1,4 @@
 import re
-import string
 
 
 def slug(target, length=-1, separator='-'):
@@ -142,4 +141,4 @@ def transliterate(target):
 
 if '__main__' == __name__:
     import sys
-    print slug(sys.argv[1])
+    print(slug(sys.argv[1]))
